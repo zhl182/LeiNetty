@@ -1,11 +1,8 @@
 package com.zhl.netty.server.properties;
 
-import com.zhl.netty.util.YamlPropertySourceFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 
-//默认不支持yml的读取 指定自定义factory
-@PropertySource(value={"classpath:lei-netty.yml"},factory = YamlPropertySourceFactory.class)
 @ConfigurationProperties(prefix = "lei.netty")
 public class ServerProperties {
     private int port = 9999;
