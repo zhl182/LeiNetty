@@ -1,1 +1,2 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.zhl.netty.server.config.NettyConfig
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=com.zhl.netty.server.config.NettyWebSocketConfig,\
+com.zhl.netty.server.config.NettyUDPConfig

@@ -3,14 +3,15 @@ package com.zhl.netty.server.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;
 
-@ConfigurationProperties(prefix = "lei.netty")
-public class ServerProperties {
+@ConfigurationProperties(prefix = "lei.netty.websocket")
+public class WebSocketServerProperties {
     private int port = 9999;
     private String host = "127.0.0.1";
     private int bossCount = 1;
     private int workCount = 8;
     private int aggregatorMaxContentLength=8192;
     private String wsContextPath = "/ws";
+    private boolean enabled = true;
     public int getPort() {
         return port;
     }
@@ -57,5 +58,13 @@ public class ServerProperties {
 
     public void setWsContextPath(String wsContextPath) {
         this.wsContextPath = wsContextPath;
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }

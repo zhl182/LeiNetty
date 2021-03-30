@@ -1,8 +1,7 @@
 package com.zhl.netty.server;
 
 
-import com.zhl.netty.server.handler.TextWebSocketFrameHandler;
-import com.zhl.netty.server.properties.ServerProperties;
+import com.zhl.netty.server.properties.WebSocketServerProperties;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -22,9 +21,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetSocketAddress;
 
-public class LeiNettyServer implements InitializingBean, BeanFactoryAware {
+public class LeiNettyWebSocketServer implements InitializingBean, BeanFactoryAware {
     @Autowired
-    private ServerProperties serverProperties;
+    private WebSocketServerProperties serverProperties;
 
     private BeanFactory beanFactory;
 

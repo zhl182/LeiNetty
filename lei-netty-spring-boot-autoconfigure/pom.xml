@@ -16,5 +16,11 @@
             <artifactId>lei-netty-spring-boot-starter</artifactId>
             <version>${lei-netty.version}</version>
         </dependency>
+        <!-- 使自定义的设置属性的ConfigurationProperties注解类的属性可以在yaml中有提示 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 </project>
