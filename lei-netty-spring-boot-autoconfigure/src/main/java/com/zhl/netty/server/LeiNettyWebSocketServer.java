@@ -62,10 +62,11 @@ public class LeiNettyWebSocketServer implements InitializingBean, BeanFactoryAwa
             channelFuture.channel().closeFuture().sync();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } finally{
+        }
+        Runtime.getRuntime().addShutdownHook(new Thread(()->{
             bossGroup.shutdownGracefully();
             workGroup.shutdownGracefully();
-        }
+        }));
     }
 
     @Override

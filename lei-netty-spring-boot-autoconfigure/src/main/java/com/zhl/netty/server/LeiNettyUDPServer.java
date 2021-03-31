@@ -45,9 +45,10 @@ public class LeiNettyUDPServer implements InitializingBean, BeanFactoryAware {
             channelFuturel.channel().closeFuture().sync();
         }catch (InterruptedException e){
             e.printStackTrace();
-        }finally {
-            group.shutdownGracefully();
         }
+        Runtime.getRuntime().addShutdownHook(new Thread(()->{
+            group.shutdownGracefully();
+        }));
     }
 
     @Override
