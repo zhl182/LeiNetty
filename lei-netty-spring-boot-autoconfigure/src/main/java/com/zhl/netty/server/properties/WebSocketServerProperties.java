@@ -1,7 +1,6 @@
 package com.zhl.netty.server.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
 
 @ConfigurationProperties(prefix = "lei.netty.websocket")
 public class WebSocketServerProperties {
