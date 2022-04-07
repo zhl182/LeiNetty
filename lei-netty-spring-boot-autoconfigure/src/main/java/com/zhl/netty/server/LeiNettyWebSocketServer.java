@@ -2,6 +2,7 @@ package com.zhl.netty.server;
 
 
 import com.zhl.netty.server.properties.WebSocketServerProperties;
+import com.zhl.netty.server.thread.factory.DaemonThreadFactory;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -20,6 +21,10 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.net.InetSocketAddress;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class LeiNettyWebSocketServer implements InitializingBean, BeanFactoryAware {
     @Autowired
@@ -29,9 +34,10 @@ public class LeiNettyWebSocketServer implements InitializingBean, BeanFactoryAwa
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Thread thread = new Thread(this::nettyStart);
-        thread.setDaemon(true);
-        thread.start();
+        ExecutorService executorService = new ThreadPoolExecutor(1,1,10,
+                TimeUnit.SECONDS,new SynchronousQueue<>(), DaemonThreadFactory::newThread);
+        executorService.execute(this::nettyStart);
+        executorService.shutdown();
     }
     public void nettyStart(){
         EventLoopGroup bossGroup = new NioEventLoopGroup(serverProperties.getBossCount());

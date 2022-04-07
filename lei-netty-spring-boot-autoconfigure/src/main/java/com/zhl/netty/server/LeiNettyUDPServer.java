@@ -2,6 +2,7 @@ package com.zhl.netty.server;
 
 import com.zhl.netty.server.handler.UDPServerHandler;
 import com.zhl.netty.server.properties.UDPServerProperties;
+import com.zhl.netty.server.thread.factory.DaemonThreadFactory;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelFuture;
@@ -16,6 +17,8 @@ import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.concurrent.*;
+
 public class LeiNettyUDPServer implements InitializingBean, BeanFactoryAware {
 
     @Autowired
@@ -24,10 +27,11 @@ public class LeiNettyUDPServer implements InitializingBean, BeanFactoryAware {
     private BeanFactory beanFactory;
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        Thread thread = new Thread(this::nettyUdpStart);
-        thread.setDaemon(true);
-        thread.start();
+    public void afterPropertiesSet(){
+        ExecutorService executorService = new ThreadPoolExecutor(1,1,10,
+                TimeUnit.SECONDS,new SynchronousQueue<>(), DaemonThreadFactory::newThread);
+        executorService.execute(this::nettyUdpStart);
+        executorService.shutdown();
     }
 
     public void nettyUdpStart(){
@@ -46,9 +50,7 @@ public class LeiNettyUDPServer implements InitializingBean, BeanFactoryAware {
         }catch (InterruptedException e){
             e.printStackTrace();
         }
-        Runtime.getRuntime().addShutdownHook(new Thread(()->{
-            group.shutdownGracefully();
-        }));
+        Runtime.getRuntime().addShutdownHook(new Thread(group::shutdownGracefully));
     }
 
     @Override
